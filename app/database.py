@@ -1,8 +1,14 @@
-from sqlmodel import SQLModel
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+import os
 
-DATABASE_URL = "sqlite+aiosqlite:///./tasks.db"
+from dotenv import load_dotenv
+from sqlmodel import SQLModel
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.orm import sessionmaker
+from sqlmodel.ext.asyncio.session import AsyncSession
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite+aiosqlite:///./tasks.db")
 
 engine = create_async_engine(DATABASE_URL, echo=False)
 
