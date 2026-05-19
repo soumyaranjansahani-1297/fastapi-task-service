@@ -11,7 +11,6 @@ A FastAPI-based CRUD API for a Task Management System. It supports task creation
 - Total matching task count returned by `GET /tasks`
 - Async SQLModel/SQLAlchemy database access
 - SQLite persistence by default
-- Redis-backed per-client rate limiting on GET APIs only
 - Logging for startup, task actions, not-found cases, and rate-limit events
 - Swagger UI at `http://127.0.0.1:8000/docs`
 
@@ -22,7 +21,7 @@ A FastAPI-based CRUD API for a Task Management System. It supports task creation
 - `app/models.py` - SQLModel task table
 - `app/schemas.py` - Pydantic request and response schemas
 - `app/crud.py` - async CRUD helpers
-- `app/rate_limiter.py` - Redis-backed rate limiter
+- `app/rate_limiter.py` - Rate limiter
 - `app/logger.py` - logging configuration
 - `app/routers/tasks.py` - task API routes
 - `requirements.txt` - Python dependencies
@@ -36,7 +35,7 @@ Install dependencies:
 
 ```bash
 python -m venv .venv
-.venv\Scripts\Activate.ps1
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
@@ -52,8 +51,6 @@ Create a `.env` file in the project root if you want to override defaults:
 
 ```env
 DATABASE_URL=sqlite+aiosqlite:///./tasks.db
-REDIS_HOST=localhost
-REDIS_PORT=6379
 RATE_LIMIT_REQUESTS=5
 RATE_LIMIT_WINDOW_SECONDS=60
 ```
@@ -61,12 +58,6 @@ RATE_LIMIT_WINDOW_SECONDS=60
 Defaults are used when these values are not provided.
 
 ## Run Locally
-
-Start Redis first. Example with Docker:
-
-```bash
-docker run --name task-service-redis -p 6379:6379 redis:7
-```
 
 Then run the FastAPI app:
 
